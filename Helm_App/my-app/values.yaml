@@ -1,0 +1,199 @@
+# Default values for my-app
+# This is a YAML-formatted file.
+
+# Cluster Configuration (Update these values from Terraform outputs)
+cluster:
+  name: "my-eks-cluster"                    # From terraform output: cluster_name                    # Your AWS region
+  endpoint: ""                              # From terraform output: cluster_endpoint
+  certificateAuthorityData: ""              # From terraform output: cluster_certificate_authority_data
+  vpcId: ""                                 # From terraform output: vpc_id
+  privateSubnets: []                        # From terraform output: private_subnets
+  publicSubnets: []                         # From terraform output: public_subnets
+  environment: "production"                 # Environment name
+
+# Global settings
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# Application configuration
+app:
+  name: my-app
+  version: "1.0.0"
+
+# Image configuration
+image:
+  registry: "992878410375.dkr.ecr.ap-south-1.amazonaws.com"
+  repository: "code_dev"
+  tag: "latest"
+  pullPolicy: Always
+  pullSecrets: []
+
+# Deployment configuration
+replicaCount: 2
+
+# Container configuration
+container:
+  port: 3000
+  name: code-dev-app
+  
+# Environment variables
+env:
+  - name: NODE_ENV
+    value: "production"
+  - name: PORT
+    value: "3000"
+  - name: LOG_LEVEL
+    value: "info"
+
+# Environment variables from ConfigMap
+envFrom:
+  configMapRef:
+    name: ""  # Will use app name if empty
+  secretRef:
+    name: ""  # Will use app name if empty
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+# Liveness and readiness probes
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+  successThreshold: 1
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+  successThreshold: 1
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+  annotations: {}
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "alb"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    # SSL/HTTPS disabled - using HTTP only
+    # alb.ingress.kubernetes.io/certificate-arn: ""  # Add your ACM certificate ARN for HTTPS
+  hosts:
+    - paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Horizontal Pod Autoscaler
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Security Context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 3000
+
+# Pod Security Context
+podSecurityContext:
+  fsGroup: 2000
+
+# Node selector
+nodeSelector: {}
+
+# Tolerations
+tolerations: []
+
+# Affinity
+affinity: {}
+
+# Pod annotations
+podAnnotations: {}
+
+# Pod labels
+podLabels: {}
+
+# Service Account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# ConfigMap data
+configMap:
+  enabled: true
+  data:
+    app.properties: |
+      # Application configuration
+      server.port=8080
+      logging.level.root=INFO
+      management.endpoints.web.exposure.include=health,info,metrics
+
+# Secret data (base64 encoded values)
+secret:
+  enabled: true
+  data: {}
+    # database-password: "cGFzc3dvcmQ="  # base64 encoded password
+
+# Persistent Volume Claim
+persistence:
+  enabled: false
+  storageClass: "gp2"
+  accessMode: ReadWriteOnce
+  size: 8Gi
+  mountPath: /data
+
+# Init containers
+initContainers: []
+
+# Sidecar containers
+sidecars: []
+
+# Extra volumes
+extraVolumes: []
+
+# Extra volume mounts
+extraVolumeMounts: []
+
+# Network Policy
+networkPolicy:
+  enabled: false
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress: []
+  egress: []

@@ -1,0 +1,21 @@
+cluster_endpoint = "https://B31D14B61F47CAD3CC9C3FEE9DD319C8.gr7.us-west-2.eks.amazonaws.com"
+cluster_name = "my-eks-cluster"
+private_subnets = [
+  "subnet-0f9e062cc874c6832",
+  "subnet-0a057ce17f4cdcbb2",
+]
+public_subnets = [
+  "subnet-07d3be7e07c1b4a8e",
+  "subnet-07767866c137382c6",
+]
+vpc_id = "vpc-0907daf9696d0b68b"
+
+------------------------
+
+ecr
+
+aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 992878410375.dkr.ecr.ap-south-1.amazonaws.com
+
+docker build -t code_dev .
+docker tag code_dev:latest 992878410375.dkr.ecr.ap-south-1.amazonaws.com/code_dev:latest
+docker push 992878410375.dkr.ecr.ap-south-1.amazonaws.com/code_dev:latest

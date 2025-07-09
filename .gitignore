@@ -1,0 +1,67 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+crash.log
+*.log
+
+# Ignore Terraform plan files
+*.tfplan
+
+# Ignore provider binaries
+*.zip
+*.tar.gz
+*.exe
+*.bin
+*.dll
+*.so
+*.dylib
+
+# VSCode settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Ignore sensitive/auto-generated files
+.env
+*.pem
+*.key
+*.crt
+.terraform/
+Terraform/.terraform/
+
+# Add to .gitignore
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/.terraform.tfstate.lock.info
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Node modules (if any)
+node_modules/
+
+# Helm charts downloaded dependencies
+**/charts/*.tgz
+**/Chart.lock
+
+# Temporary files
+*.tmp
+*.temp
