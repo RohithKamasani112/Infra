@@ -25,7 +25,7 @@ app:
 image:
   registry: "992878410375.dkr.ecr.ap-south-1.amazonaws.com"
   repository: "code_dev"
-  tag: "latest"
+  tag: "20250709-b9f0ceb"
   pullPolicy: Always
   pullSecrets: []
 
