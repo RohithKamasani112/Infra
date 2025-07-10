@@ -23,45 +23,42 @@ image:
   tag: "latest"
 ```
 
-### 2. Deploy to Development
+### 2. Quick Deploy
 
 ```bash
 # Make the deploy script executable
-chmod +x deploy.sh
+chmod +x quick-deploy.sh
 
-# Deploy to development environment
-./deploy.sh dev my-app-dev my-app-dev
+# Deploy using the single values.yaml file
+./quick-deploy.sh
 ```
 
-### 3. Deploy to Production
+### 3. Manual Deployment
 
 ```bash
-# Deploy to production environment
-./deploy.sh prod my-app-prod my-app-prod
-```
-
-## Manual Deployment
-
-### Install/Upgrade
-
-```bash
-# Development
-helm upgrade --install my-app ./my-app \
-  --namespace my-app-dev \
-  --values ./my-app/values-dev.yaml \
+# Deploy manually using single values.yaml
+helm upgrade --install code-dev-app ./my-app \
+  --namespace code-dev \
+  --values ./my-app/values.yaml \
   --create-namespace
+```
 
-# Production
+## Alternative Deployment Options
+
+### Install/Upgrade with Custom Namespace
+
+```bash
+# Deploy to custom namespace
 helm upgrade --install my-app ./my-app \
-  --namespace my-app-prod \
-  --values ./my-app/values-prod.yaml \
+  --namespace my-custom-namespace \
+  --values ./my-app/values.yaml \
   --create-namespace
 ```
 
 ### Uninstall
 
 ```bash
-helm uninstall my-app --namespace my-app-dev
+helm uninstall code-dev-app --namespace code-dev
 ```
 
 ## Configuration
@@ -150,9 +147,9 @@ docker push 123456789012.dkr.ecr.us-west-2.amazonaws.com/my-app:latest
 Update the image tag in your values file and deploy:
 
 ```bash
-# Update values-prod.yaml with new image tag
+# Update values.yaml with new image tag
 # Then deploy
-./deploy.sh prod my-app-prod my-app-prod
+./quick-deploy.sh
 ```
 
 ## Monitoring and Troubleshooting
@@ -229,11 +226,11 @@ persistence:
   mountPath: /app/data
 ```
 
-## Environment-Specific Configurations
+## Configuration
 
-- **values-dev.yaml**: Development environment with debug logging, single replica
-- **values-prod.yaml**: Production environment with multiple replicas, strict security, SSL
-- **values.yaml**: Default values used as base configuration
+- **values.yaml**: Single configuration file containing all application settings
+- Environment-specific settings can be overridden using `--set` flags during deployment
+- All configurations are consolidated into one file for simplicity
 
 ## Security Features
 

@@ -1011,7 +1011,7 @@ jobs:
         helm upgrade --install my-app ./my-app \
           --namespace code-dev \
           --create-namespace \
-          --values ./my-app/values-dev.yaml \
+          --values ./my-app/values.yaml \
           --set image.registry=$ECR_REGISTRY \
           --set image.tag=$IMAGE_TAG \
           --wait --timeout=10m
@@ -1060,13 +1060,15 @@ jobs:
 helm upgrade --install my-app ./helm/my-app \
   --namespace code-dev \
   --create-namespace \
-  --values ./helm/my-app/values-dev.yaml
+  --values ./helm/my-app/values.yaml
 
-# Deploy to production:
+# Deploy to production (with production overrides):
 helm upgrade --install my-app ./helm/my-app \
-  --namespace code-dev \
+  --namespace code-dev-prod \
   --create-namespace \
-  --values ./helm/my-app/values-prod.yaml
+  --values ./helm/my-app/values.yaml \
+  --set replicaCount=3 \
+  --set env[0].value="production"
 
 # Get application URL:
 kubectl get ingress -n code-dev -o jsonpath='{.items[0].status.loadBalancer.ingress[0].hostname}'

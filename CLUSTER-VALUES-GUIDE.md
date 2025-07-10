@@ -124,11 +124,18 @@ cluster:
 
 3. **Deploy Applications:**
    ```bash
-   # Deploy main application
-   helm upgrade --install my-app Helm_App/my-app --namespace default
-   
+   # Deploy main application using single values.yaml
+   cd Helm_App
+   ./quick-deploy.sh
+
+   # Or deploy manually
+   helm upgrade --install code-dev-app Helm_App/my-app \
+     --namespace code-dev \
+     --values Helm_App/my-app/values.yaml \
+     --create-namespace
+
    # Deploy monitoring stack
-   cd helm_prometheus
+   cd Helm_prometheus
    ./deploy-monitoring.sh deploy prod
    ```
 

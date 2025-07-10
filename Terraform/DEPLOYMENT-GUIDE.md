@@ -32,13 +32,13 @@ cd helm
 # Make deploy script executable
 chmod +x deploy.sh
 
-# Deploy to development environment
-./deploy.sh dev code-dev code-dev-app
+# Deploy using quick deploy script
+./quick-deploy.sh
 
 # Or deploy manually
 helm upgrade --install code-dev-app ./my-app \
   --namespace code-dev \
-  --values ./my-app/values-dev.yaml \
+  --values ./my-app/values.yaml \
   --create-namespace
 ```
 
@@ -201,12 +201,12 @@ kubectl top pods -n code-dev
 # Deploy new version
 helm upgrade code-dev-app ./my-app \
   --namespace code-dev \
-  --values ./my-app/values-dev.yaml
+  --values ./my-app/values.yaml
 ```
 
 ### GitOps Updates (with ArgoCD)
 ```bash
-# 1. Update image tag in values-dev.yaml
+# 1. Update image tag in values.yaml
 # 2. Commit and push to Git
 git add .
 git commit -m "Update to version X.Y.Z"
@@ -220,13 +220,13 @@ git push origin main
 
 ### Deploy to Production
 ```bash
-# Deploy to production namespace
-./deploy.sh prod code-dev-prod code-dev-prod-app
-
-# Or manually
+# Deploy to production namespace using single values.yaml
+# You can override specific values for production using --set flags
 helm upgrade --install code-dev-prod-app ./my-app \
   --namespace code-dev-prod \
-  --values ./my-app/values-prod.yaml \
+  --values ./my-app/values.yaml \
+  --set replicaCount=3 \
+  --set env[0].value="production" \
   --create-namespace
 ```
 

@@ -25,7 +25,7 @@ echo -e "${BLUE}[INFO]${NC} Starting fresh deployment..."
 # Deploy with progress monitoring
 helm upgrade --install code-dev-app ./my-app \
     --namespace code-dev \
-    --values ./my-app/values-dev.yaml \
+    --values ./my-app/values.yaml \
     --create-namespace \
     --timeout 10m \
     --wait &
