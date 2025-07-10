@@ -3,7 +3,7 @@ name: Deploy to EKS with Helm
 on:
   push:
     branches:
-      - main  # or your deployment branch
+      - main # or your deployment branch
 
 jobs:
   helm-deploy:
