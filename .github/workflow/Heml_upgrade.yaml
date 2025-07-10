@@ -7,7 +7,7 @@ on:
 
 jobs:
   helm-deploy:
-    runs-on: [self-hosted, infra_runner]
+    runs-on: [self-hosted, Linux]
     name: Helm Upgrade to EKS
 
     steps:
